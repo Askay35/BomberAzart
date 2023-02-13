@@ -1,0 +1,27 @@
+@import './base.css';
+
+#app{
+  background: var(--app-bg);
+  color:var(--default-text-color);
+  font-family: 'Manrope';
+  display: flex;
+  flex-direction: column;
+}
+#app, body{
+  font-size: 14px;
+  min-width: 100vw;
+  min-height:100vh;
+}
+
+/* chat */
+
+
+
+/* chat */
+
+
+/* game */
+/* game */
+
+/* bet */
+/* bet */
