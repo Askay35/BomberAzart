@@ -23,18 +23,20 @@ router.post("/api/bet/add", jsonParser, User.updateActivity, (req, res) => {
           //если ставка подходящего размера
           if (req.body.bet_size >= 10 && req.body.bet_size <= 1000000) {
             //если ставка подходящего размера
-            Game.bets.push({
+            let bet = {
               user_id: user_data[0].id,
               name: user_data[0].name,
               bet_size: req.body.bet_size,
               coef: -1,
               win: -1,
-            });
+              bet_id: user_data[0].id + Date.now().toString(),
+            };
+            Game.bets.push(bet);
 
             //обновляем ставки у всех пользователей
             io.emit("update current bets", Game.bets);
 
-            return res.json({ success: true });
+            return res.json({ success: true, data: { bet_id: bet.bet_id } });
           } else {
             return res.json({
               success: false,
@@ -67,38 +69,38 @@ router.post(
   async (req, res) => {
     //если раунд идет
     if (Game.round_state == Game.ROUND_STATES.ROUND_START) {
-      //получаем данные пользователя
-      let user_data = await User.getUserData(req.token, ["id"]);
+      
       //получаем текущие ставки пользователя
-      let user_bets = [];
-      Game.bets.forEach((val, index) => {
-        if (val.user_id == user_data[0].id) {
-          user_bets.push(index);
+      let bet_to_take = null;
+      for (let bet of Game.bets) {
+        if (bet.bet_id == req.body.bet_id) {
+          bet_to_take = bet;
         }
-      });
+      }
+
       //если ставки есть и айди забираемой ставки меньше их количества
-      if (req.body.bet_id >= 0 && req.body.bet_id < user_bets.length) {
+      if (bet_to_take!==null) {
         //если ставку еще не забрали
-        if (Game.bets[user_bets[req.body.bet_id]].coef == -1) {
-          Game.bets[user_bets[req.body.bet_id]].coef = Game.current_coef;
-          Game.bets[user_bets[req.body.bet_id]].win =
-            Game.bets[user_bets[req.body.bet_id]].bet_size *
-            Game.bets[user_bets[req.body.bet_id]].coef;
+        if (bet_to_take.coef == -1) {
+          bet_to_take.coef = Game.current_coef;
+          bet_to_take.win =
+            bet_to_take.bet_size *
+            bet_to_take.coef;
 
           //обновляем ставки у всех пользователей
           io.emit("update current bets", Game.bets);
 
           await User.addMoney(
-            Game.bets[user_bets[req.body.bet_id]].user_id,
-            Game.bets[user_bets[req.body.bet_id]].win -
-              Game.bets[user_bets[req.body.bet_id]].bet_size
+            bet_to_take.user_id,
+            bet_to_take.win -
+              bet_to_take.bet_size
           );
 
           return res.json({
             success: true,
             data: {
-              coef: Game.bets[user_bets[req.body.bet_id]].coef,
-              win: Game.bets[user_bets[req.body.bet_id]].win,
+              coef: bet_to_take.coef,
+              win: bet_to_take.win,
             },
           });
         } else {
@@ -117,10 +119,11 @@ router.post(
 
 router.post(
   "/api/message/add",
-  User.updateActivity,
   jsonParser,
+  User.updateActivity,
   async (req, res) => {
     let is_text = false;
+
     if ("text" in req.body) {
       is_text = true;
       if (req.body.text.length > 150 || req.body.text == "") {
@@ -154,21 +157,21 @@ router.post(
         "bet_size",
         "round_id",
       ]);
-      let round_coef = await Game.getRoundData(bet_data[0].round_id)[0].coef;
+      let round_coef = await Game.getRoundData(bet_data[0].round_id);
       let bet = {
+        name: message.name,
         win: bet_data[0].win,
         coef: bet_data[0].coef,
         bet_size: bet_data[0].bet_size,
-        win: bet_data[0].win,
-        round: round_coef
+        round_coef: round_coef[0].coef,
       };
-      await Game.addMessage({
+      io.emit("chat message", bet);
+
+      Game.addMessage({
         user_id: user_data[0].id,
         bet_id: req.body.bet_id,
       });
 
-      io.emit("chat message", { name: message.name, bet: bet });
-     
       return res.json({ success: true });
     } else {
       return res.json({

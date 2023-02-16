@@ -41,6 +41,9 @@ export default {
   background: var(--ui-elem-bg);
   font-size: 12px;
   font-weight: 500;
+  &:last-child{
+    margin-bottom: 10px;
+  }
   border: 1px solid var(--ui-elem-bg);
   & > div {
     width: 60px;

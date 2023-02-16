@@ -1,16 +1,19 @@
 <template>
   <div class="bet-control">
     <div class="bet-control__header">
-      <div class="bet-control__checkboxes" :disabled="bet_data.status">
-        <Checkbox class="autobet-cb-wrap">Автоставка</Checkbox>
-        <Checkbox class="autotake-cb-wrap">Автовывод</Checkbox>
+      <div
+        class="bet-control__checkboxes"
+        :class="{ 'disabled-click': bet_data.status || bet_data.make_next }"
+      >
+        <Checkbox @change-state="bet_data.autobet=!bet_data.autobet" class="autobet-cb-wrap">Автоставка</Checkbox>
+        <Checkbox @change-state="bet_data.autotake=!bet_data.autotake" class="autotake-cb-wrap">Автовывод</Checkbox>
       </div>
       <div class="bet-control__autotake-coef">
         <span>x</span>
         <input
           class="autotake-input transparent-input"
           value="2.00"
-          :disabled="bet_data.status"
+          :class="{ 'disabled-click': bet_data.status || bet_data.make_next }"
           @change.prevent="autocoefChange"
           @input.prevent="autocoefInput"
           type="text"
@@ -52,7 +55,7 @@
         </div>
         <div
           v-else
-          :disabled="$store.getters.roundStart"
+          :class="{ 'disabled-click': $store.getters.roundStart }"
           role="button"
           class="bet-control__btn prevent-select"
         >
@@ -70,7 +73,9 @@
         <div class="bet-control__size">
           <div class="bet-control__size-top">
             <div
-              :disabled="bet_data.status"
+              :class="{
+                'disabled-click': bet_data.status || bet_data.make_next,
+              }"
               class="bet-control__size-minus size-control-btn"
               @click="subtractBetSize(10)"
               role="button"
@@ -80,7 +85,9 @@
             <div class="bet-control__size-input-wrap">
               <input
                 ref="bet_size_input"
-                :disabled="bet_data.status"
+                :class="{
+                  'disabled-click': bet_data.status || bet_data.make_next,
+                }"
                 @change.prevent="betChange"
                 @input.prevent="betInput"
                 type="text"
@@ -96,20 +103,31 @@
             <div
               class="bet-control__size-plus size-control-btn"
               role="button"
-              :disabled="bet_data.status"
+              :class="{
+                'disabled-click': bet_data.status || bet_data.make_next,
+              }"
               @click="addBetSize(10)"
             >
               <img role="button" src="/src/assets/images/plus.svg" />
             </div>
           </div>
           <div class="bet-control__size-bot prevent-select-all">
-            <div class="add-bet-size-btn" role="button" @click="addBetSize(50)">
+            <div
+              class="add-bet-size-btn"
+              role="button"
+              :class="{
+                'disabled-click': bet_data.status || bet_data.make_next,
+              }"
+              @click="addBetSize(50)"
+            >
               <div role="button">+50</div>
             </div>
             <div
               class="add-bet-size-btn"
               role="button"
-              :disabled="bet_data.status"
+              :class="{
+                'disabled-click': bet_data.status || bet_data.make_next,
+              }"
               @click="addBetSize(100)"
             >
               <div role="button">+100</div>
@@ -117,7 +135,9 @@
             <div
               class="add-bet-size-btn"
               role="button"
-              :disabled="bet_data.status"
+              :class="{
+                'disabled-click': bet_data.status || bet_data.make_next,
+              }"
               @click="addBetSize(200)"
             >
               <div role="button">+200</div>
@@ -125,7 +145,9 @@
             <div
               class="add-bet-size-btn"
               role="button"
-              :disabled="bet_data.status"
+              :class="{
+                'disabled-click': bet_data.status || bet_data.make_next,
+              }"
               @click="addBetSize(500)"
             >
               <div role="button">+500</div>
@@ -152,28 +174,26 @@ export default {
         bet_size: 100,
         status: false,
         make_next: false,
+        bet_id: null,
       },
     };
   },
-  props: {
-    bet_id: {
-      required: true,
-    },
-  },
-  created() {
-    this.bet_data.bet_id = this.bet_id;
-  },
   watch: {
     "$store.state.game.current_coef"(coef) {
-      if (coef >= this.bet_data.autocoef) {
+      if (this.bet_data.autotake && coef >= this.bet_data.autocoef) {
         this.takeBet();
       }
     },
     "$store.state.game.round_state"(new_state) {
       this.bet_data.status = false;
-      if (
+      this.bet_data.bet_id = null;
+      if (new_state == this.$store.state.game.ROUND_STATES.ROUND_END) {
+        if(this.bet_data.autobet){
+          this.bet_data.make_next=true;
+        }
+      } else if (
         new_state == this.$store.state.game.ROUND_STATES.ROUND_START &&
-        (this.bet_data.make_next || this.bet_data.autobet)
+        this.bet_data.make_next
       ) {
         this.bet_data.make_next = false;
         this.$store
@@ -181,6 +201,7 @@ export default {
           .then((resp) => {
             if (resp.data.success) {
               this.bet_data.status = true;
+              this.bet_data.bet_id = resp.data.data.bet_id;
             } else {
               console.log("addBet fail", resp.data.error);
             }
@@ -194,8 +215,7 @@ export default {
   methods: {
     makeBet() {
       if (
-        this.$store.state.game.round_state ==
-        this.$store.state.game.ROUND_STATES.ROUND_END
+        this.$store.getters.roundEnd
       ) {
         this.bet_data.make_next = true;
       }
@@ -215,6 +235,7 @@ export default {
           }
         });
       }
+      this.bet_data.bet_id = null;
       this.bet_data.status = false;
     },
     subtractBetSize(val) {

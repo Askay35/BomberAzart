@@ -2,19 +2,19 @@
   <div class="chat-wrap">
     <div class="chat-messages">
       <div ref="chat_messages" class="chat-messages-inner hide-scroll">
-        <div v-for="(message, key) in messages" :key="key" class="chat-message">
-          <template v-if="'bet' in message">
-            <ChatBet
-              :name="message.name"
-              :size="message.bet.bet_size"
-              :coef="message.bet.coef"
-              :round="message.bet.round"
-              :win="message.bet.win"
-            />
-          </template>
-          <template v-else>
+        <div v-for="(message, index) in messages" class="chat-message">
+          <template v-if="'text' in message">
             <div class="chat-message-name">{{ message.name }}:</div>
             <div class="chat-message-body">{{ message.text }}</div>
+          </template>
+          <template v-else>
+            <ChatBet
+              :name="message.name"
+              :size="message.bet_size"
+              :coef="message.coef"
+              :round="message.round_coef"
+              :win="message.win"
+            />
           </template>
         </div>
       </div>
@@ -86,10 +86,8 @@ export default {
         if (this.$store.state.user.is_auth) {
           this.$store
             .dispatch("sendMessage", {
-              message: {
-                name: this.$store.state.user.name,
-                text: this.message_text,
-              }
+              name: this.$store.state.user.name,
+              text: this.message_text,
             })
             .then(() => {
               this.$refs.chat_messages.scrollTop =

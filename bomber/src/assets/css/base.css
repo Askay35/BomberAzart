@@ -17,8 +17,8 @@
   --bet-win-color: #59003b;
   --default-transition: all 0.2s ease-out;
   --bet-name-text-color: #b7359a;
-  --modal-header-bg:#59023C;
-  --modal-body-bg:#4E0034;
+  --modal-header-bg: #59023c;
+  --modal-body-bg: #4e0034;
 }
 * {
   cursor: default;
@@ -46,11 +46,119 @@
   padding: 5px 10px;
   transition: background 0.15s ease;
 }
+
+/* CLEAR */
+
+/* The container must be positioned relative: */
+.custom-select {
+  position: relative;
+  font-family: Arial;
+  width: 35%;
+  font-size:14px;
+}
+
+.custom-select select {
+  display: none; /*hide original SELECT element: */
+}
+
+.select-selected {
+  background-color: var(--ui-elem-bg);
+  border-radius: 18px;
+}
+
+.select-selected.select-arrow-active{
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.custom-select .select-items>div:last-child{
+  border-bottom-left-radius: 18px;
+  border-bottom-right-radius: 18px;
+}
+
+/* Style the arrow inside the select element: */
+.select-selected:after {
+  position: absolute;
+  content: "";
+  opacity: 0;
+  top: 14px;
+  right: 10px;
+  width: 0;
+  height: 0;
+  border: 6px solid transparent;
+  border-color: #fff transparent transparent transparent;
+}
+
+.overflow-visible {
+  overflow: visible !important;
+}
+.overflow-scroll {
+  overflow: scroll !important;
+}
+
+/* style the items (options), including the selected item: */
+.select-items div,
+.select-selected {
+  color: #ffffff;
+  background-color: var(--ui-elem-bg);
+  padding: 6px 15px;
+  border: 1px solid transparent;
+  border-color: transparent transparent rgba(0, 0, 0, 0.1) transparent;
+  cursor: pointer;
+}
+
+/* Style items (options): */
+.select-items {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  z-index: 99;
+}
+
+/* Hide the items when the select box is closed: */
+.select-hide {
+  display: none;
+}
+
+.select-items div:hover,
+.same-as-selected {
+  background-color: #46002e;
+}
+
+/* CLEAR */
+
+.form-select option {
+  cursor: pointer;
+  border: 1px solid var(--pink-color);
+  font-family: "Manrope";
+}
+.form-select {
+  font-weight: 600;
+  width: max-content;
+  padding: 5px 10px;
+  font-family: "Manrope";
+  font-size: 14px;
+  background: var(--ui-elem-bg);
+  border: 1px solid var(--pink-color);
+  color: var(--pink-color);
+}
+.form-select:focus {
+  box-shadow: none;
+  border-color: inherit;
+}
+
 .outline-btn:hover {
   background: #46002e;
 }
+.disabled-click {
+  pointer-events: none;
+}
 .outline-btn,
 .outline-btn * {
+  -webkit-user-select: none; /* Safari */
+  -ms-user-select: none; /* IE 10 and IE 11 */
+  user-select: none; /* Standard syntax */
   cursor: pointer;
 }
 
@@ -68,76 +176,80 @@
 .pink-shadow {
   box-shadow: 0px 0px 10px 1px #a6006e;
 }
-.show-password svg{
-  fill:#9d0067;
+.show-password svg {
+  fill: #9d0067;
 }
-.show-password *{
+.show-password * {
   pointer-events: none;
 }
-.show-password{
+.show-password {
   width: 20px;
   cursor: pointer;
-  transform:translateY(-50%);
+  transform: translateY(-50%);
   position: absolute;
-  right:10px;
-  top:50%;
+  right: 10px;
+  top: 50%;
 }
-.modal-subheader{
+.modal-subheader {
   font-size: 14px;
-  font-weight:600;
-  color:var(--pink-color);
+  font-weight: 600;
+  color: var(--pink-color);
   padding: 20px;
-  background: #40002B;
+  background: #40002b;
 }
-.error-input::placeholder,.error-input::-moz-placeholder,.error-input::-webkit-input-placeholder{
+.error-input::placeholder,
+.error-input::-moz-placeholder,
+.error-input::-webkit-input-placeholder {
   color: #ff3c8e !important;
-  opacity:1;
+  opacity: 1;
 }
-.pink-button{
-  background:#d8008e;
+.pink-button {
+  background: #d8008e;
 }
-.pink-button:hover{
+.pink-button:hover {
   background: #b90078;
 }
-.pink-button:active{
-  background:#d8008e;
+.pink-button:active {
+  background: #d8008e;
 }
-.dark-button{
-  background: #390025
+.dark-button {
+  background: #390025;
 }
-.dark-button:hover{
-  background: #2e001e
+.dark-button:hover {
+  background: #2e001e;
 }
-.dark-button:active{
-  background: #390025
+.dark-button:active {
+  background: #390025;
 }
-.active.show-password svg{
-  fill:var(--pink-color);
+.active.show-password svg {
+  fill: var(--pink-color);
   cursor: pointer;
 }
-.text-input{
+.text-input {
   background: #390025;
-  border-radius:8px;
+  border-radius: 8px;
   padding-left: 10px;
-  font-weight:500;
-  color:var(--default-text-color);
-  font-size:14px;
+  font-weight: 500;
+  color: var(--default-text-color);
+  font-size: 14px;
   height: 35px;
 }
-.password-input{
+.password-input {
   padding-right: 40px;
 }
-.text-input::placeholder,.text-input::-moz-placeholder,.text-input::-webkit-input-placeholder{
-  font-weight:500;
-  color:#fff;
+.text-input::placeholder,
+.text-input::-moz-placeholder,
+.text-input::-webkit-input-placeholder {
+  font-weight: 500;
+  color: #fff;
 }
 #modal-overlay {
   position: fixed;
-  left:0;
-  top:0;
+  left: 0;
+  top: 0;
   width: 100vw;
   height: 100vh;
-  z-index:10;
+  z-index: 10;
   background: rgba(19, 0, 13, 0.9);
 }
 .prevent-select,
@@ -146,7 +258,7 @@
   -ms-user-select: none; /* IE 10 and IE 11 */
   user-select: none; /* Standard syntax */
 }
-*[role="button"] *{
+*[role="button"] * {
   cursor: pointer;
 }
 .hide-scroll {
@@ -158,31 +270,31 @@
 .hide-scroll::-webkit-scrollbar {
   display: none;
 }
-.v-dropdown-item{
-  padding:8px 15px;
-  transition:all .15s ease-out;
+.v-dropdown-item {
+  padding: 8px 15px;
+  transition: all 0.15s ease-out;
   cursor: pointer;
 }
-.v-dropdown-item:hover{
-  background:#CEC9CD;
+.v-dropdown-item:hover {
+  background: #cec9cd;
 }
-.v-dropdown-item:active{
-  background:#e0e0e0;
+.v-dropdown-item:active {
+  background: #e0e0e0;
 }
-.v-dropdown .v-dropdown-item:last-child{
-  border-bottom-left-radius:8px;
-  border-bottom-right-radius:8px;
+.v-dropdown .v-dropdown-item:last-child {
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
 }
-.v-dropdown{
+.v-dropdown {
   position: absolute;
   z-index: 3;
   display: flex;
   flex-direction: column;
-  background:#FFF;
-  color:#444752;
-  transition: all .4s ease;
-  border-bottom-left-radius:8px;
-  border-bottom-right-radius:8px;
+  background: #fff;
+  color: #444752;
+  transition: all 0.4s ease;
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
 }
 .bet {
   color: #fff;
@@ -215,7 +327,7 @@
   background: var(--ui-elem-bg);
   border-radius: var(--ui-elem-br);
 }
-input{
+input {
   border: 0;
 }
 input:focus {

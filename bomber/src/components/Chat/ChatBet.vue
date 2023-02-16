@@ -12,13 +12,14 @@
         </div>
         <div class="chat-bet-win">
           <div>Выигрыш:</div>
-          {{ parseFloat(win).toFixed(2) }} ₽
+          {{ win > 0 ? parseFloat(win).toFixed(2) + " ₽" : "-" }}
         </div>
       </div>
       <div class="chat-bet-coef">
         <div class="chat-bet-out">
           <div>Вывод:</div>
-          <Coef>{{ parseFloat(coef).toFixed(2) }}</Coef>
+          <Coef v-if="coef" :coef="coef"></Coef>
+          <div class="chat-bet__no-coef" v-else>-</div>
         </div>
         <div class="chat-bet-round">
           <div>Раунд:</div>
@@ -30,17 +31,17 @@
 </template>
 
 <script>
-import Coef from '../UI/Coef.vue';
+import Coef from "../UI/Coef.vue";
 
 export default {
-    props: {
-        name: String,
-        size: Number,
-        coef: Number,
-        round: Number,
-        win: Number,
-    },
-    components: { Coef }
+  props: {
+    name: String,
+    size: Number,
+    coef: Number,
+    round: Number,
+    win: Number,
+  },
+  components: { Coef },
 };
 </script>
 
@@ -53,7 +54,7 @@ export default {
   flex-direction: column;
   border-radius: 8px;
   display: flex;
-  margin-bottom: 15px;
+  width: 100%;
   .bet {
     margin-left: 2px;
   }
@@ -86,7 +87,7 @@ export default {
   display: flex;
   align-items: center;
 }
-.chat-bet-coef > div > div:not(.bet),
+.chat-bet-coef > div > div:first-child,
 .chat-bet-info > div > div {
   color: #b7359a;
   margin-right: 3px;

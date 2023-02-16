@@ -1,6 +1,5 @@
 import config from "../../config";
 import axios from "axios";
-import user from "./user";
 
 const state = function () {
   return {
@@ -13,11 +12,6 @@ const state = function () {
       current: [],
       prev: [],
       my: [],
-      top: {
-        day: [],
-        month: [],
-        year: [],
-      },
     },
     show_prev_round: false,
     round_state: 3,
@@ -109,7 +103,7 @@ const getters = {
 const actions = {
   //message = {text:'' or bet_id:123}
   sendMessage({ commit, state, rootState }, message) {
-    return axios.post(config.NODE_HOST + "/message/add", message, {
+      return axios.post(config.NODE_HOST + "/message/add", message, {
       params: {
         token: rootState.user.token,
       },
@@ -132,7 +126,7 @@ const actions = {
         .post(
           config.NODE_HOST + "/bet/take",
           {
-            bet_id: bet_id,
+            bet_id:bet_id
           },
           {
             params: {

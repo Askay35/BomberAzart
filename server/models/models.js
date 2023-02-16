@@ -71,7 +71,7 @@ let Game = {
 
       io.emit("coef changed", this.current_coef);
 
-      await this.wait(1000);
+      await this.wait(100);
 
       while (this.current_coef < this.round_coef) {
         this.current_coef += 0.01;
@@ -113,9 +113,9 @@ let Game = {
     }
     return asyncQuery(`select * from bets where bet_id='${bet_id}' limit 1`);
   },
-  async getRoundData(round_id, columns = ["coef"]) {
+  getRoundData(round_id, columns = ["coef"]) {
     return asyncQuery(
-      `select ${columns.join(", ")} from rounds where id=${round_id} limit 1`
+      `SELECT ${columns.join(", ")} FROM rounds WHERE id=${round_id} limit 1`
     );
   },
   async addBets(bets_arr, round_id, date_time) {
@@ -167,11 +167,11 @@ let Game = {
   async getMessages(count = -1) {
     if (count == -1) {
       return asyncQuery(
-        `SELECT messages.text, messages.bet_id, users.name FROM messages LEFT JOIN users on messages.user_id = users.id`
+        `SELECT * FROM (SELECT messages.id, messages.text, bets.coef, bets.win, bets.bet_size, rounds.coef as round_coef, users.name FROM messages LEFT JOIN users on messages.user_id = users.id LEFT JOIN bets on messages.bet_id = bets.id LEFT JOIN rounds on bets.round_id = rounds.id ORDER BY messages.id DESC) as msgs ORDER BY msgs.id ASC`
       );
     } else {
       return asyncQuery(
-        `SELECT * FROM (SELECT messages.id, messages.text, messages.bet_id, users.name FROM messages LEFT JOIN users on messages.user_id = users.id ORDER BY messages.id DESC LIMIT ${count}) as msgs ORDER BY msgs.id ASC`
+        `SELECT * FROM (SELECT messages.id, messages.text, bets.coef, bets.win, bets.bet_size, rounds.coef as round_coef, users.name FROM messages LEFT JOIN users on messages.user_id = users.id LEFT JOIN bets on messages.bet_id = bets.id LEFT JOIN rounds on bets.round_id = rounds.id ORDER BY messages.id DESC LIMIT ${count}) as msgs ORDER BY msgs.id ASC`
       );
     }
   },
@@ -181,13 +181,20 @@ let User = {
   initUser(socket) {
     return Game.getRounds(25, ["coef"]).then((rounds) => {
       Game.getMessages(30).then((messages) => {
+        messages.forEach(message => {
+          for (const key in message) {
+            if(message[key]===null || key == 'id'){
+              delete message[key];
+            }
+          }
+        });
         socket.emit("game init", {
           round_state: Game.round_state,
           round_wait_max: Game.round_wait_max,
           rounds: rounds.map((v) => {
             return v.coef;
           }),
-          messages: messages,
+          messages: messages
         });
       });
     });

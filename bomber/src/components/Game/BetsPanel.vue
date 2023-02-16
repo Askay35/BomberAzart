@@ -1,6 +1,6 @@
 <template>
   <div id="bets-wrap">
-    <div id="bets-tabs">
+    <div class="bets-tabs">
       <div
         v-for="tab in tabs"
         @click="selectTab(tab)"
@@ -25,7 +25,7 @@
         Пред. раунд
       </div>
     </div>
-    <div id="bet-tabs-content" :style="{marginTop:current_tab==2?'25px':'0'}" class="hide-scroll">
+    <div id="bet-tabs-content" :class="{'overflow-scroll':current_tab!=2, 'overflow-visible':current_tab==2}"  :style="{marginTop:current_tab==2?'10px':'0'}" class="hide-scroll">
       <slot></slot>
     </div>
     <div class="overflow-shadow"></div>
@@ -75,12 +75,11 @@ export default {
 
 #prev-round-btn.active {
   background: #ff00a8;
-  border-color: #2d011e;
+  border-color: #ff00a8;
   color: #2d011e;
 }
 
-#bet-tabs-content {
-  overflow: scroll;
+#bet-tabs-content, #top-bets-wrap {
   & > div {
     gap: 10px;
     overflow: scroll;
@@ -126,7 +125,7 @@ export default {
   flex-direction: column;
 }
 
-#bets-tabs {
+.bets-tabs {
   border-radius: 30px;
   min-height: 40px;
   padding: 5px;

@@ -72,8 +72,8 @@
       </div>
     </div>
     <div id="game-controls">
-      <BetControl bet_id="0" />
-      <BetControl bet_id="1" />
+      <BetControl />
+      <BetControl />
     </div>
   </div>
 </template>
