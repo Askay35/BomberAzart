@@ -13,7 +13,6 @@ const state = function () {
       prev: [],
       my: [],
     },
-    show_prev_round: false,
     round_state: 3,
     round_wait_val: 100,
     round_wait_max: 100,
@@ -28,9 +27,6 @@ const state = function () {
 const mutations = {
   toggleChatState(state, val) {
     state.chat = val;
-  },
-  togglePrevRound(state) {
-    state.show_prev_round = !state.show_prev_round;
   },
   setRoundState(state, val) {
     state.round_state = val;
@@ -103,10 +99,13 @@ const getters = {
 const actions = {
   //message = {text:'' or bet_id:123}
   sendMessage({ commit, state, rootState }, message) {
-      return axios.post(config.NODE_HOST + "/message/add", message, {
+    console.log(message);
+    return axios.post(config.NODE_HOST + "/message/add", message, {
       params: {
         token: rootState.user.token,
       },
+    }).then(resp=>{
+      console.log(resp.data);
     });
   },
   updateUserBets({ commit, state, rootState }) {

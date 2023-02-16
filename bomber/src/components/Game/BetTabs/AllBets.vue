@@ -1,8 +1,9 @@
 <template>
-  <div>
+  <div class="hide-scroll">
     <Bet
-      v-if="$store.state.game.show_prev_round"
+      v-if="show_prev_round"
       v-for="bet in $store.state.game.bets.prev"
+      :share="false"
       :bet="bet"
     />
     <Bet
@@ -17,6 +18,9 @@
 <script>
 import Bet from "../UI/Bet.vue";
 export default {
+  props: {
+    show_prev_round: { reqired: true },
+  },
   components: { Bet },
 };
 </script>

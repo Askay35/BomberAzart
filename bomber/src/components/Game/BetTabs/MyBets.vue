@@ -1,6 +1,6 @@
 <template>
-  <div>
-      <Bet v-for="bet in $store.state.game.bets.my" :bet="bet" />
+  <div class="hide-scroll">
+     <Bet v-for="bet in $store.state.game.bets.my" :bet="bet" />
   </div>
 </template>
 

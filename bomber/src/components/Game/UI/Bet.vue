@@ -7,7 +7,7 @@
       <template v-else>-</template>
     </div>
     <div class="bet-info__item-win">
-      {{ bet.win > 0.0 ? bet.win.toFixed(2) : "-" }}
+      {{ bet.win > 0.0 ? bet.win.toFixed(2)+' ₽' : "-" }}
     </div>
     <div v-if="share" @click="$store.dispatch('sendMessage', {bet_id:bet.id})" class="bet-info__item-share outline-btn">
       <img src="/src/assets/images/share.svg" />

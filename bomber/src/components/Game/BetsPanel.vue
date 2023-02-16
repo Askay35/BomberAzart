@@ -3,67 +3,83 @@
     <div class="bets-tabs">
       <div
         v-for="tab in tabs"
-        @click="selectTab(tab)"
+        @click="current_tab = tab"
         class="bets-tab"
-        :class="{ active: tab.show }"
+        :class="{ active: current_tab.name == tab.name }"
       >
         {{ tab.name }}
       </div>
     </div>
-    <div v-if="current_tab != 2" id="bets-tabs-info">
+    <div v-if="current_tab.name != 'Топ'" id="bets-tabs-info">
       <div id="bets-count" class="number-info">
         <div>Колличество ставок:</div>
         <div>{{ betsCount }}</div>
       </div>
       <div
-        v-if="current_tab == 0"
-        @click="$store.commit('togglePrevRound')"
+        v-if="current_tab.name == 'Все'"
+        @click="show_prev_round = !show_prev_round"
         id="prev-round-btn"
-        :class="{ active: $store.state.game.show_prev_round }"
+        :class="{ active: show_prev_round }"
         class="outline-btn"
       >
         Пред. раунд
       </div>
     </div>
-    <div id="bet-tabs-content" :class="{'overflow-scroll':current_tab!=2, 'overflow-visible':current_tab==2}"  :style="{marginTop:current_tab==2?'10px':'0'}" class="hide-scroll">
-      <slot></slot>
+    <div
+      id="bet-tabs-content"
+      :class="{
+        'overflow-scroll': current_tab.name != 'Топ',
+        'overflow-visible': current_tab.name == 'Топ',
+      }"
+      :style="{ marginTop: current_tab.name == 'Топ' ? '10px' : '0' }"
+      class="hide-scroll"
+    >
+      <keep-alive>
+        <component
+          :is="current_tab.component" v-bind="allBetsProps()"
+        ></component>
+      </keep-alive>
     </div>
     <div class="overflow-shadow"></div>
   </div>
 </template>
 
 <script>
+import { defineAsyncComponent } from '@vue/runtime-core';
 export default {
   data() {
     return {
-      current_tab: 0,
-      tabs: [],
+      show_prev_round: false,
+      current_tab: { name: "Все", component: "all-bets" },
+      tabs: [
+        { name: "Все", component: "all-bets" },
+        { name: "Мои", component: "my-bets" },
+        { name: "Топ", component: "top-bets" },
+      ],
     };
+  },
+  components:{
+    AllBets:defineAsyncComponent(()=>import('../Game/BetTabs/AllBets.vue')),
+    MyBets:defineAsyncComponent(()=>import('../Game/BetTabs/MyBets.vue')),
+    TopBets:defineAsyncComponent(()=>import('../Game/BetTabs/TopBets.vue')),
+  },
+  methods:{
+    allBetsProps(){
+      if(this.current_tab.name == 'Все'){
+        return {show_prev_round:this.show_prev_round};
+      }
+      return {};
+    },
   },
   computed: {
     betsCount() {
       switch (this.current_tab) {
-        case 0:
+        case "AllBets":
           return this.$store.getters.currentBetsCount;
-        case 1:
+        case "MyBets":
           return this.$store.getters.userBetsCount;
         default:
           return 0;
-      }
-    },
-  },
-  methods: {
-    selectTab(tab) {
-      if (!tab.show) {
-        for (let t in this.tabs) {
-          if (this.tabs[t].show) {
-            this.tabs[t].show = false;
-          }
-        }
-        this.current_tab = this.tabs.findIndex((v) => {
-          return v.name == tab.name;
-        });
-        tab.show = true;
       }
     },
   },
@@ -79,7 +95,7 @@ export default {
   color: #2d011e;
 }
 
-#bet-tabs-content, #top-bets-wrap {
+#bet-tabs-content{
   & > div {
     gap: 10px;
     overflow: scroll;
