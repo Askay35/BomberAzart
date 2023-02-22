@@ -15,9 +15,9 @@ const mutations = {
   editUser(state, user) {
     for (let key in user) {
       if (key == "money") {
-        localStorage.setItem(key, user[key].toFixed(2));
+        sessionStorage.setItem(key, user[key].toFixed(2));
       } else {
-        localStorage.setItem(key, user[key]);
+        sessionStorage.setItem(key, user[key]);
       }
       state[key] = user[key];
     }
@@ -28,7 +28,7 @@ const mutations = {
     state.email = null;
     state.is_auth = false;
     state.money = 0.0;
-    localStorage.clear();
+    sessionStorage.clear();
   },
 };
 

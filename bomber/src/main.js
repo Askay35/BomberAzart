@@ -1,6 +1,5 @@
 import { createApp } from "vue";
 import App from "./App.vue";
-import router from "./router";
 import "./assets/css/main.css";
 import store from "./store/index";
 import axios from "axios";
@@ -9,13 +8,13 @@ const app = createApp(App);
 
 let socket = io("ws://127.0.0.1:3000");
 
-if (localStorage.getItem("token") !== null) {
+if (sessionStorage.getItem("token") !== null) {
   store.commit("editUser", {
-    token: localStorage.getItem("token"),
-    name: localStorage.getItem("name"),
-    email: localStorage.getItem("email"),
+    token: sessionStorage.getItem("token"),
+    name: sessionStorage.getItem("name"),
+    email: sessionStorage.getItem("email"),
     is_auth: true,
-    money: parseFloat(localStorage.getItem("money")),
+    money: parseFloat(sessionStorage.getItem("money")),
   });
   store.dispatch("updateUserBets");
 }
@@ -77,7 +76,6 @@ setInterval(async () => {
     });
 }, 10000);
 
-app.use(router);
 app.use(store);
 
 app.mount("#app");

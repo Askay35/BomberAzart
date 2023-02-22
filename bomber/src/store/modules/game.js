@@ -99,7 +99,6 @@ const getters = {
 const actions = {
   //message = {text:'' or bet_id:123}
   sendMessage({ commit, state, rootState }, message) {
-    console.log(message);
     return axios.post(config.NODE_HOST + "/message/add", message, {
       params: {
         token: rootState.user.token,

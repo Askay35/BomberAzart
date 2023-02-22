@@ -9,6 +9,7 @@ const router = express.Router();
 
 let bodyParser = require("body-parser");
 let jsonParser = bodyParser.json();
+const rateLimit = require('express-rate-limit');
 
 //сделать ставку, передать bet_size
 router.post("/api/bet/add", jsonParser, User.updateActivity, (req, res) => {
@@ -117,8 +118,17 @@ router.post(
 
 //message = {bet_id}
 
+const chatLimit = rateLimit({
+	windowMs: 60 * 1000, 
+	max: 30, 
+	standardHeaders: true, 
+	legacyHeaders: false,
+})
+
+
 router.post(
   "/api/message/add",
+  chatLimit,
   jsonParser,
   User.updateActivity,
   async (req, res) => {

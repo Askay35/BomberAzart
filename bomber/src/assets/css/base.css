@@ -327,10 +327,10 @@
   background: var(--ui-elem-bg);
   border-radius: var(--ui-elem-br);
 }
-input {
+header input,.chat-wrap input {
   border: 0;
 }
-input:focus {
+header input:focus,.chat-wrap input:focus {
   outline: inherit;
 }
 .overflow-shadow {

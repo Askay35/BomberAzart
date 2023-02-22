@@ -181,9 +181,9 @@ let User = {
   initUser(socket) {
     return Game.getRounds(25, ["coef"]).then((rounds) => {
       Game.getMessages(30).then((messages) => {
-        messages.forEach(message => {
+        messages.forEach((message) => {
           for (const key in message) {
-            if(message[key]===null || key == 'id'){
+            if (message[key] === null || key == "id") {
               delete message[key];
             }
           }
@@ -194,7 +194,7 @@ let User = {
           rounds: rounds.map((v) => {
             return v.coef;
           }),
-          messages: messages
+          messages: messages,
         });
       });
     });
@@ -212,11 +212,13 @@ let User = {
     );
   },
   updateActivity(req, res, next) {
-    axios.post(
-      "http://127.0.0.1:8000/api/update/online",
-      {},
-      { params: { token: req.query.token } }
-    );
+    axios
+      .post(
+        "http://127.0.0.1:8000/api/update/online",
+        {},
+        { params: { token: req.query.token } }
+      )
+      .catch((e) => console.log(e));
     next();
   },
   async addMoney(user_id, money) {

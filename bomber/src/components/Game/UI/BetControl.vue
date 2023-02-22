@@ -5,8 +5,16 @@
         class="bet-control__checkboxes"
         :class="{ 'disabled-click': bet_data.status || bet_data.make_next }"
       >
-        <Checkbox @change-state="bet_data.autobet=!bet_data.autobet" class="autobet-cb-wrap">Автоставка</Checkbox>
-        <Checkbox @change-state="bet_data.autotake=!bet_data.autotake" class="autotake-cb-wrap">Автовывод</Checkbox>
+        <Checkbox
+          @change-state="bet_data.autobet = !bet_data.autobet"
+          class="autobet-cb-wrap"
+          >Автоставка</Checkbox
+        >
+        <Checkbox
+          @change-state="bet_data.autotake = !bet_data.autotake"
+          class="autotake-cb-wrap"
+          >Автовывод</Checkbox
+        >
       </div>
       <div class="bet-control__autotake-coef">
         <span>x</span>
@@ -188,8 +196,8 @@ export default {
       this.bet_data.status = false;
       this.bet_data.bet_id = null;
       if (new_state == this.$store.state.game.ROUND_STATES.ROUND_END) {
-        if(this.bet_data.autobet){
-          this.bet_data.make_next=true;
+        if (this.bet_data.autobet) {
+          this.bet_data.make_next = true;
         }
       } else if (
         new_state == this.$store.state.game.ROUND_STATES.ROUND_START &&
@@ -215,12 +223,15 @@ export default {
   methods: {
     makeBet() {
       if (
-        this.$store.getters.roundEnd
+        this.$store.getters.roundEnd &&
+        this.$store.state.user.money >= this.bet_data.bet_size
       ) {
+        this.$store.state.user.money -= this.bet_data.bet_size;
         this.bet_data.make_next = true;
       }
     },
     cancelBet() {
+      this.$store.state.user.money += this.bet_data.bet_size;
       this.bet_data.make_next = false;
     },
     takeBet() {

@@ -11,6 +11,9 @@ const User = require("./models/models").User;
 const helmet = require('helmet');
 
 
+// Apply the rate limiting middleware to all requests
+
+
 io.on("connection", (socket) => {
   User.initUser(socket);
 
