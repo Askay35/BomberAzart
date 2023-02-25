@@ -13,15 +13,15 @@
   min-height:100vh;
 }
 
-/* chat */
-
-
-
-/* chat */
-
-
-/* game */
-/* game */
-
-/* bet */
-/* bet */
+.btn-pink{
+  background: var(--pink-color);
+  color:#fff;
+  transition: all .2s ease;
+  padding:6px 10px;
+  border-radius:8px;
+  font-weight: 600;
+  border: none;
+}
+.btn-pink:hover{
+  background: #b10074;
+}

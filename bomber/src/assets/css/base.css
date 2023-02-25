@@ -128,6 +128,17 @@
 
 /* CLEAR */
 
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
 .form-select option {
   cursor: pointer;
   border: 1px solid var(--pink-color);
@@ -143,6 +154,7 @@
   border: 1px solid var(--pink-color);
   color: var(--pink-color);
 }
+.disable-focus:focus,
 .form-select:focus {
   box-shadow: none;
   border-color: inherit;
