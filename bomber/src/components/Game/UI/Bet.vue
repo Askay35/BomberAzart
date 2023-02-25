@@ -1,6 +1,6 @@
 <template>
   <div class="bet-info__item" :class="{ win: bet.win > 0.0 }">
-    <div class="bet-info__item-name">{{ 'name' in bet ? bet.name : $store.state.user.name }}</div>
+    <div class="bet-info__item-name">{{ 'name' in bet ? bet.name : ('user' in bet ? bet.user.name : $store.state.user.name) }}</div>
     <div class="bet-info__item-size">{{ bet.bet_size.toFixed(2) }} ₽</div>
     <div class="bet-info__item-coef" :class="{ win: bet.coef > 0.0 }">
       <coef v-if="bet.coef > 0.0" :coef="bet.coef"></coef>

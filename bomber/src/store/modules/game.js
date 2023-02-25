@@ -103,8 +103,6 @@ const actions = {
       params: {
         token: rootState.user.token,
       },
-    }).then(resp=>{
-      console.log(resp.data);
     });
   },
   updateUserBets({ commit, state, rootState }) {

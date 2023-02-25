@@ -31,6 +31,7 @@ socket.on("chat message", (message) => {
 });
 
 socket.on("update current bets", (bets) => {
+  console.log(bets);
   store.commit("setCurrentBets", bets);
 });
 

@@ -60,13 +60,13 @@ export default {
   },
   mounted() {
     this.getTopBets();
-    let x, i, j, l, ll, selElmnt, a, b, c;
+    let x, j, l, ll, selElmnt, a, b, c;
     /* Look for any elements with the class "custom-select": */
     x = document.getElementsByClassName("custom-select");
     l = x.length;
 
     let instanse = this;
-    for (i = 0; i < l; i++) {
+    for (let i = 0; i < l; i++) {
       selElmnt = x[i].getElementsByTagName("select")[0];
       ll = selElmnt.length;
       /* For each element, create a new DIV that will act as the selected item: */
@@ -94,6 +94,7 @@ export default {
           /* When an item is clicked, update the original select box,
         and the selected item: */
 
+
           if (e.target.hasAttribute("data-time")) {
             instanse.current_time = e.target.dataset.time;
           }
@@ -105,25 +106,8 @@ export default {
           ) {
             instanse.getTopBets();
           }
-
-          let y, i, k, s, h, sl, yl;
-          s = c.parentNode.parentNode.getElementsByTagName("select")[0];
-          sl = s.length;
-          h = c.parentNode.previousSibling;
-          for (i = 0; i < sl; i++) {
-            if (s.options[i].innerHTML == c.innerHTML) {
-              s.selectedIndex = i;
-              h.innerHTML = c.innerHTML;
-              y = c.parentNode.getElementsByClassName("same-as-selected");
-              yl = y.length;
-              for (k = 0; k < yl; k++) {
-                y[k].removeAttribute("class");
-              }
-              c.setAttribute("class", "same-as-selected");
-              break;
-            }
-          }
-          h.click();
+          
+          e.target.parentNode.parentNode.getElementsByClassName('select-selected')[0].innerHTML = e.target.innerHTML;
         });
         b.appendChild(c);
       }

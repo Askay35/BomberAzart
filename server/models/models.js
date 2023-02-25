@@ -218,7 +218,6 @@ let User = {
         {},
         { params: { token: req.query.token } }
       )
-      .catch((e) => console.log(e));
     next();
   },
   async addMoney(user_id, money) {
