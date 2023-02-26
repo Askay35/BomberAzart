@@ -78,7 +78,6 @@ export default {
 #bomber-main {
   display: flex;
   height: calc(100vh - 70px);
-  widows: 100%;
 }
 
 #bets-wrap {

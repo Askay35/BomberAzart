@@ -3,6 +3,7 @@ const moment = require("moment");
 const { db } = require("../db");
 const axios = require("axios").default;
 const io = require("../socket");
+const config = require('../config');
 
 let Game = {
   ROUND_STATES: {
@@ -214,7 +215,7 @@ let User = {
   updateActivity(req, res, next) {
     axios
       .post(
-        "http://127.0.0.1:8000/api/update/online",
+        config.php.host+"/update/online",
         {},
         { params: { token: req.query.token } }
       )

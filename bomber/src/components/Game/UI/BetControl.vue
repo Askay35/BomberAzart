@@ -455,6 +455,7 @@ export default {
 }
 .bet-control__body {
   display: flex;
+  gap:10px;
   border-bottom-left-radius: 8px;
   border-bottom-right-radius: 8px;
   padding: 0 15px;
@@ -467,7 +468,7 @@ export default {
 .bet-control__btn-underline {
   background: linear-gradient(180deg, #ff00a8 0%, #702851 100%);
   border-radius: 8px 8px 0px 0px;
-  height: 2px;
+  height: 3px;
   width: 66.66%;
   position: absolute;
   left: 50%;
@@ -479,7 +480,6 @@ export default {
   display: flex;
   flex-direction: column;
   position: relative;
-  margin-right: 15px;
 }
 .bet-control__size-wrap {
   padding: 12px 0;

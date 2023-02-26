@@ -3,10 +3,11 @@ import App from "./App.vue";
 import "./assets/css/main.css";
 import store from "./store/index";
 import axios from "axios";
+import config from "./config";
 
 const app = createApp(App);
 
-let socket = io("ws://127.0.0.1:3000");
+let socket = io("ws://"+config.IO_HOST);
 
 if (sessionStorage.getItem("token") !== null) {
   store.commit("editUser", {
@@ -65,17 +66,18 @@ socket.on("coef changed", (new_coef) => {
 });
 
 //get online users
-axios.get("http://127.0.0.1:8000/api/users/online").then((users_online) => {
+axios.get("http://"+config.PHP_HOST+"/users/online").then((users_online) => {
   store.commit("setUsersOnline", users_online.data);
 });
 //get online users every 10 seconds
 setInterval(async () => {
   await axios
-    .get("http://127.0.0.1:8000/api/users/online")
+    .get("http://"+config.PHP_HOST+"/users/online")
     .then((users_online) => {
       store.commit("setUsersOnline", users_online.data);
     });
 }, 10000);
+
 
 app.use(store);
 

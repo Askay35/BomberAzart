@@ -37,7 +37,7 @@ app.use(userRoutes);
 app.use(gameRoutes);
 
 
-app.listen(config.server.port);
+app.listen(config.server.port, '0.0.0.0');
 
 
 io.listen(3000);

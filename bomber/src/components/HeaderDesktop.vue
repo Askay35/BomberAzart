@@ -1,6 +1,5 @@
 <template>
-  <header>
-    <DefaultModal id="feedback-modal" ref="feedback_modal">
+  <DefaultModal id="feedback-modal" ref="feedback_modal">
       <template #header> Позвонить в службу поддержки </template>
       <template #body>
         <div class="modal-contact-item">
@@ -569,6 +568,8 @@
         <qiwi-form v-show="current_system == 2" />
       </template>
     </Modal>
+  <header>
+    
     <img id="header-logo" src="@/assets/images/logo.svg" />
     <div
       class="v-dropdown"
@@ -643,7 +644,7 @@
             id="header-profile-btn"
             onclick="document.getElementById('header-dropdown-menu').classList.toggle('active')"
             role="button"
-            style="width: 29.6px"
+            style="min-width:29.6px"
             class="header-circle"
           >
             <img style="width: 13px" src="@/assets/images/person.svg" />

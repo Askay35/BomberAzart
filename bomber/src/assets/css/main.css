@@ -1,4 +1,5 @@
 @import './base.css';
+@import './responsive.css';
 
 #app{
   background: var(--app-bg);

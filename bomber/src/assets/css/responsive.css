@@ -1,0 +1,200 @@
+@import "./base.css";
+
+.circle-loader {
+  width: 25px;
+  height: 25px;
+}
+.round-wait .circle-loader {
+  display: none;
+  margin-right: 10px;
+}
+
+#round-wait-wrap {
+  align-items: center;
+}
+
+@media (min-width: 1600px) {
+  .bet-control__btn {
+    height: 82px;
+  }
+}
+@media (max-width: 1440px) {
+  .chat-wrap {
+    display: none;
+  }
+}
+@media (max-width: 1000px) {
+  #bomber-main {
+    flex-direction: column;
+    height: auto;
+    margin-top: 70px;
+  }
+  #game-controls {
+    flex-direction: column;
+    gap: 10px;
+    padding: 10px;
+  }
+  #game-coefs {
+    height: 46px;
+    border-bottom: 1px solid var(--border-color);
+  }
+  #round-wait-text {
+    line-height: 1.3;
+  }
+  .bet-control__body {
+    flex-direction: row-reverse;
+  }
+  #current-coef__wrap {
+    align-items: center;
+    border: 1px solid var(--border-color);
+    margin: 10px 10px 0;
+    border-radius: 8px;
+  }
+  #game-wrap.active .round-wait {
+    align-items: center !important;
+    justify-content: start;
+    width: 100%;
+  }
+  #game-wrap.active .round-wait .circle-loader {
+    display: block;
+  }
+  #game-wrap.active #round-wait-text {
+    line-height: 1;
+    margin-bottom: 8px;
+    text-align: left;
+    font-size: 12px;
+  }
+  #game-wrap.active #current-coef > div {
+    align-items: start;
+  }
+  #howtoplay_modal .modal-body {
+    height: 70vh;
+  }
+  .v-modal {
+    max-width: 100vw;
+    height: max-content;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+  #game-wrap.active .round-wait .progress-bar {
+    width: 100% !important;
+  }
+  .round-wait .progress-bar {
+    height: 8px;
+  }
+  #game-wrap.active .progress-bar {
+    height: 5px;
+  }
+  #game-wrap.active #round-wait-wrap {
+    align-items: start;
+  }
+  #game-coefs-inner {
+    padding: 10px;
+  }
+  #current-coef-val {
+    font-size: 46px;
+  }
+  #current-coef-text {
+    font-size: 40px !important;
+  }
+  #game-wrap.active #current-coef.round-start {
+    margin: 0;
+  }
+  #game-wrap.active #current-coef-val {
+    font-size: 24px;
+  }
+  #game-wrap.active .round-wait #current-coef-val {
+    font-size: 16px;
+    margin-bottom:0;
+  }
+  #game-wrap.active #current-coef-text {
+    font-size: 18px !important;
+  }
+  #game-wrap.active #current-coef__wrap {
+    position: fixed;
+    font-size: 17px !important;
+    left: 50%;
+    top: 80px;
+    transform: translateX(-50%);
+    z-index: 10;
+    width: 95%;
+    border: 1px solid var(--border-color);
+    background: var(--app-bg);
+    margin: 0;
+    height: 66px;
+    padding-left: 15px;
+  }
+  #game-wrap.active #current-coef.round-wait{
+    margin-bottom: 0!important;
+  }
+  #game-wrap.active #current-coef {
+    height: 100%;
+    justify-content: start;
+  }
+  #game-wrap.active #game-controls {
+    margin-top: 210px;
+  }
+  .bet-control {
+    width: 100%;
+  }
+  .round-wait {
+    flex-direction: row !important;
+    height: 100%;
+    font-size: 24px !important;
+  }
+  #header-profile-wrap {
+    display: none;
+  }
+  #header-right-wrap > div {
+    width: max-content;
+  }
+  #header-logo {
+    height: 22px;
+  }
+  .header-circle img {
+    width: 18px;
+    height: 18px;
+  }
+  .header-circle {
+    min-width: 25px !important;
+    height: 25px !important;
+  }
+  header {
+    padding: 0 15px;
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 10;
+  }
+  #show-last-coefs {
+    width: 25px;
+    right: 15px;
+  }
+  #bets-wrap {
+    min-height: 600px;
+    border-top: 1px solid var(--border-color);
+    width: 100%;
+    margin: 20px 0;
+    padding-top: 20px;
+  }
+  .number-info > div:first-child {
+    font-size: 14px;
+  }
+  #bets-wrap .overflow-shadow {
+    background: linear-gradient(
+      180deg,
+      rgba(19, 0, 13, 0) 0%,
+      rgba(19, 0, 13, 0.6) 100%
+    );
+  }
+  #current-coef {
+    margin-top: 0;
+    height: 210px;
+  }
+  #current-coef > div {
+    justify-content: center;
+  }
+}
+@media (max-width: 700px) {
+}
